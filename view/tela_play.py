@@ -1,5 +1,7 @@
 import pygame
 import sys
+from widgets.nomear_jogador import NomearJogador  # Importe a classe NomearJogador
+from widgets.jogador_i import JogadorI  # Importe a nova classe Jogador
 
 class TelaPlay:
     def __init__(self, largura, altura, jogadores_selecionados):
@@ -21,21 +23,25 @@ class TelaPlay:
         self.jogador_atual = 0  # Controla qual jogador está sendo nomeado
         self.novo_nome = ""
 
-        # Fonte para exibir textos
-        self.font = pygame.font.SysFont('Arial', 30)
+        # Fonte para exibir os nomes dos jogadores
+        self.font = pygame.font.SysFont('Arial', 30)  # Inicializa a fonte aqui
+
+        # Cria uma instância de NomearJogador com os parâmetros desejados
+        self.nomear_jogador_widget = NomearJogador(font_size=40, cor_texto=(255, 0, 0), cor_borda=(255, 255, 255))
+        
+        # Cria a instância da classe Jogador com as novas configurações
+        self.jogador_widget = JogadorI(font_size=30, cor_texto=(255, 255, 255), cor_borda=(255, 0, 0))
 
     def desenhar_tela(self):
         # Desenha o fundo
         self.tela.blit(self.background, (0, 0))
 
-        # Exibe o campo para o jogador atual inserir seu nome acima da lista de jogadores
-        texto_nome_atual = self.font.render(f"Nome do Jogador {self.jogador_atual + 1}: {self.novo_nome}", True, (255, 255, 255))
-        self.tela.blit(texto_nome_atual, (20, 50))
+        # Exibe o nome do jogador atual chamando o método desenhar da classe NomearJogador
+        self.nomear_jogador_widget.desenhar(self.tela, self.jogador_atual, self.novo_nome, self.largura, self.altura)
 
-        # Exibe os nomes dos jogadores abaixo do campo de nomeação
+        # Exibe os nomes dos jogadores abaixo de "Nome do Jogador"
         for i, jogador in enumerate(self.jogadores):
-            texto_nome = self.font.render(f"Jogador {i + 1}: {jogador['nome']}", True, (255, 255, 255))
-            self.tela.blit(texto_nome, (20, 150 + i * 40))
+            self.jogador_widget.desenhar(self.tela, jogador["nome"], i, self.largura, self.altura)
 
         # Atualiza a tela
         pygame.display.flip()
