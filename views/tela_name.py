@@ -1,16 +1,16 @@
-# tela_play.py
+# tela_name.py
 import pygame
 import sys
 from widgets.nomear_jogador import NomearJogador
 from widgets.jogador_i import JogadorI
 from widgets.back_arrow import BackArrow
 
-class TelaPlay:
+class TelaName:
     def __init__(self, largura, altura, jogadores_selecionados):
         self.largura = largura
         self.altura = altura
         self.tela = pygame.display.set_mode((largura, altura))
-        pygame.display.set_caption("Tela de Jogo")
+        pygame.display.set_caption("Tela de Nomear")
         
         # Certifique-se de que a imagem do fundo está sendo carregada corretamente
         self.background = pygame.image.load('assets/bg.jpg')
@@ -23,10 +23,10 @@ class TelaPlay:
         self.novo_nome = ""
         self.nomear_jogador_widget = NomearJogador(font_size=40, cor_texto=(255, 0, 0), cor_borda=(255, 255, 255))
         self.jogador_widget = JogadorI(font_size=30, cor_texto=(255, 255, 255), cor_borda=(255, 0, 0))
-        self.back_arrow = BackArrow('assets/back_arrow.png', 40, 40, 10, 10)
+        self.back_arrow = BackArrow('assets/back_arrow.png', 40, 40, self.largura - 50, 10)
 
     def desenhar_tela(self):
-        self.tela.blit(self.background, (0, 0))
+        self.tela.blit(self.background, (0., 0))
         self.back_arrow.desenhar(self.tela)
         self.nomear_jogador_widget.desenhar(self.tela, self.jogador_atual, self.novo_nome, self.largura, self.altura)
         for i, jogador in enumerate(self.jogadores):
@@ -38,6 +38,8 @@ class TelaPlay:
             if evento.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            elif evento.type == pygame.K_ESCAPE:
+                return False
             elif evento.type == pygame.MOUSEBUTTONDOWN:
                 if self._verificar_clique_seta(evento.pos):
                     return False  # Retorna False para voltar à TelaInicial

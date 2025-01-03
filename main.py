@@ -6,7 +6,7 @@ from controller import Controller
 pygame.init()
 
 # Define as dimensões da tela
-largura, altura = 800, 600
+largura, altura = 1920, 1000
 
 # Cria o controlador
 controller = Controller(largura, altura)
